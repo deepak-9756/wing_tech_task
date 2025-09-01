@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1064945442539",
+    "project_id": "wings-tech",
+    "storage_bucket": "wings-tech.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064945442539:android:ea2dba1d5265fcf4c528ae",
+        "android_client_info": {
+          "package_name": "com.example.wing_tech_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6Si1IHrzoLTBiewEz4ouCIxAtWL3znWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
