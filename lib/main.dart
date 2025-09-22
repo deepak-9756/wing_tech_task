@@ -1,60 +1,73 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-import 'providers/auth_provider.dart';
-import 'providers/customer_provider.dart';
-import 'providers/notification_provider.dart';
-import 'screens/splash_screen.dart';
-import 'services/notification_service.dart';
-import 'services/database_service.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-}
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'screens/dashboard_screen.dart';
+import 'screens/login_screen.dart';
+import 'controllers/auth_controller.dart';
 
 void main() async {
-  // “testwtsm@gmail.com” / “wts@123”
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  // Firebase initialization
   await Firebase.initializeApp();
-  await DatabaseService.instance.database;
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  await NotificationService.initialize();
-
-  runApp(const MyApp());
+  
+  // Initialize GetX controllers
+  Get.put(AuthController());
+  
+  runApp(AssetManagementApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+class AssetManagementApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => CustomerProvider()),
-        ChangeNotifierProvider(create: (_) => NotificationProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Task Manager',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
+    return GetMaterialApp(
+      title: 'Asset Management System',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue[700],
+          foregroundColor: Colors.white,
+          elevation: 2,
+        ),
+        cardTheme: CardTheme(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
-        home: const SplashScreen(),
       ),
+      home: AuthWrapper(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Show loading while checking auth state
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        
+        // User is logged in
+        if (snapshot.hasData && snapshot.data != null) {
+          return DashboardScreen();
+        }
+        
+        // User is not logged in
+        return LoginScreen();
+      },
     );
   }
 }
