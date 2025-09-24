@@ -4,6 +4,9 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+<string>This app needs camera access to capture photos and detect objects</string>
+
 	<key>CFBundleDisplayName</key>
 	<string>Wing Tech Task</string>
 	<key>CFBundleExecutable</key>
