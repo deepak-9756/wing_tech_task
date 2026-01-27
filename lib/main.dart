@@ -19,7 +19,7 @@ void main() async {
     url: 'https://pqbwhjkqqrruynacuyht.supabase.co', // ← Paste your URL here
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxYndoamtxcXJydXluYWN1eWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0OTM2MjcsImV4cCI6MjA3ODA2OTYyN30.9D42uvK2NFzSH_VUUNzNZugEwb_FGdczsFeQ7Xw2scg', // ← Paste your key here
-  );
+  );   
   
   runApp(const MyApp());
 }
